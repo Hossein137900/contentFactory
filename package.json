@@ -12,7 +12,7 @@
     "@motionone/utils": "^10.18.0",
     "@react-three/drei": "^10.0.4",
     "framer": "^2.4.1",
-    "framer-motion": "^12.4.10",
+    "framer-motion": "^10.13.1",
     "maath": "^0.10.8",
     "next": "15.2.1",
     "react": "^19.0.0",
