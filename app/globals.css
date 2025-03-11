@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-}
+
 
 @theme inline {
   --color-background: var(--background);
@@ -11,14 +9,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground: #ededed;
-  }
-}
+
 
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -158,4 +151,17 @@ body {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+@keyframes gradient-shift {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 3s linear infinite;
 }
