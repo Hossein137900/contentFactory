@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sahel.className} antialiased relative`}>
+      <body className={`${sahel.className} bg-[#f8fafc] antialiased relative`}>
         <div className="relative">
           <Navbar />
         </div>
