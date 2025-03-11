@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import connect from '@/lib/data';
 import Content from '@/models/content';
 import jwt from 'jsonwebtoken';
