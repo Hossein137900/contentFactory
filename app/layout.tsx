@@ -3,6 +3,7 @@ import "./globals.css";
 import { sahel } from "@/next-persian-fonts/sahel";
 import Navbar from "@/components/global/navabr";
 import Footer from "@/components/global/footer";
+import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,6 +22,7 @@ export default function RootLayout({
           <Navbar />
         </div>
         {children}
+        <Toaster position="top-center" reverseOrder={false} />
         <Footer />
       </body>
     </html>

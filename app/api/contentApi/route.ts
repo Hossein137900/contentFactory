@@ -22,10 +22,12 @@ export async function POST(request: Request) {
         interface JwtPayloadWithId extends jwt.JwtPayload {
             id: string;
         }
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayloadWithId;
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET! as string) as JwtPayloadWithId;
         if (!decodedToken) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
+        console.log(decodedToken);
+        
         const userId = decodedToken.id;
         await connect();
         const body = await request.json();
@@ -34,7 +36,7 @@ export async function POST(request: Request) {
         }
         const content = await new Content({
             ...body
-            ,user:userId
+            ,userId:userId
         });
         await content.save();
         return NextResponse.json({ message: "Content created successfully",content }, { status: 201 });
