@@ -220,7 +220,7 @@ export default function AddBlogPage() {
       <motion.h2
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="text-2xl md:text-4xl font-black my-4 text-center text-white text-transparent bg-clip-text"
+        className="text-2xl md:text-4xl font-black my-4 text-center text-white bg-clip-text"
       >
         افزودن بلاگ جدید
       </motion.h2>

@@ -1,7 +1,6 @@
 import CategoryManager from '@/components/category'
 import React from 'react'
 
-import { Toaster } from 'react-hot-toast'
 
 const Page = () => {
   return (
