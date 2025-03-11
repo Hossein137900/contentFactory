@@ -15,28 +15,15 @@ export async function GET() {
 }
 export async function POST(request: Request) {
     try {
-        const token = request.headers.get("token");
         await connect();
-
-        if (!token) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        }
-        interface JwtPayloadWithId extends jwt.JwtPayload {
-            id: string;
-        }
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayloadWithId;
-        if (!decodedToken) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        }
-        const userId = decodedToken.id;
+      
         const body =await request.json();
         if (!body) {
             return NextResponse.json({ message: "All fields are required" }, { status: 400 });
         }
         const newRequest =
         await new Request({
-            ...body,
-            userId
+            ...body
         })
         await newRequest.save();
         return NextResponse.json({ message: "Request created successfully",newRequest }, { status: 201 });}

@@ -18,12 +18,11 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { title, children } = await request.json();
+    const { title } = await request.json();
     await connect();
 
     const newCategory = new Category({
       title,
-      children: children || [],
     });
 
     await newCategory.save();
