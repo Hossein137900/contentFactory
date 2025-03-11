@@ -10,37 +10,35 @@ import {
   FaChevronUp,
   FaHeart,
 } from "react-icons/fa";
-
+const footerItems = [
+  {
+    icon: FaGithub,
+    title: "Github",
+    link: "https://github.com",
+    color: "#333",
+  },
+  {
+    icon: FaLinkedin,
+    title: "LinkedIn",
+    link: "https://linkedin.com",
+    color: "#0077b5",
+  },
+  {
+    icon: FaInstagram,
+    title: "Instagram",
+    link: "https://instagram.com",
+    color: "#e4405f",
+  },
+  {
+    icon: FaTwitter,
+    title: "Twitter",
+    link: "https://twitter.com",
+    color: "#1da1f2",
+  },
+];
 const Footer = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const controls = useAnimation();
-
-  const footerItems = [
-    {
-      icon: FaGithub,
-      title: "Github",
-      link: "https://github.com",
-      color: "#333",
-    },
-    {
-      icon: FaLinkedin,
-      title: "LinkedIn",
-      link: "https://linkedin.com",
-      color: "#0077b5",
-    },
-    {
-      icon: FaInstagram,
-      title: "Instagram",
-      link: "https://instagram.com",
-      color: "#e4405f",
-    },
-    {
-      icon: FaTwitter,
-      title: "Twitter",
-      link: "https://twitter.com",
-      color: "#1da1f2",
-    },
-  ];
 
   const pulseAnimation = {
     scale: [1, 1.1, 1],
@@ -83,7 +81,49 @@ const Footer = () => {
       sequence();
     }
   }, [isExpanded, controls]);
+  useEffect(() => {
+    if (!isExpanded) {
+      const timer = setTimeout(() => {
+        controls.start("initial");
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isExpanded, controls]);
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
 
+      // Calculate distance from bottom (100px threshold)
+      const distanceFromBottom = documentHeight - scrollPosition;
+
+      if (distanceFromBottom < 100) {
+        setIsExpanded(true);
+      } else {
+        // Only auto-close on mobile
+        if (window.innerWidth < 1024) {
+          setIsExpanded(false);
+        }
+      }
+    };
+
+    // Throttle the scroll event for better performance
+    let timeout: NodeJS.Timeout;
+    const throttledScroll = () => {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(handleScroll, 100);
+    };
+
+    window.addEventListener("scroll", throttledScroll);
+
+    // Initial check
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", throttledScroll);
+      if (timeout) clearTimeout(timeout);
+    };
+  }, []);
   return (
     <motion.footer
       initial={{ y: 100 }}
@@ -115,7 +155,7 @@ const Footer = () => {
       <motion.div
         initial={{ height: "4rem" }}
         animate={{
-          height: isExpanded ? "24rem" : "4rem",
+          height: isExpanded ? "24rem" : "2rem",
           opacity: 1,
         }}
         onHoverStart={() => window.innerWidth >= 1024 && setIsExpanded(true)}
