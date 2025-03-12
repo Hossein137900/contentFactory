@@ -10,6 +10,7 @@ import { BsFileEarmarkText, BsCamera } from "react-icons/bs";
 import { FaPencilAlt } from "react-icons/fa";
 import { RiPencilRuler2Line } from "react-icons/ri";
 import { MdOutlineSocialDistance } from "react-icons/md";
+import AboutHero from "@/components/global/hero";
 
 export default function WorksPage() {
   const [selectedWork, setSelectedWork] = useState<WorkExample | null>(null);
@@ -52,6 +53,16 @@ export default function WorksPage() {
 
   return (
     <>
+      <AboutHero
+        backgroundImage="/assets/images/cam1.jpg"
+        title="نمونه کارهای خلاقانه ما"
+        subtitle="خلق محتوای حرفه‌ای برای کسب و کار شما"
+        primaryButtonText="شروع همکاری"
+        secondaryButtonText="درباره ما"
+        primaryButtonLink="/contact"
+        secondaryButtonLink="/about"
+        overlayOpacity={0.5}
+      />
       <main className="min-h-screen p-8 max-w-5xl mx-auto mt-24" dir="rtl">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
@@ -70,8 +81,8 @@ export default function WorksPage() {
                 whileHover={{ scale: 1.05 }}
                 aria-label={`Filter by ${categoryMapping[category]}`}
                 role="button"
-
-                title={categoryMapping[category]}                whileTap={{ scale: 0.95 }}
+                title={categoryMapping[category]}
+                whileTap={{ scale: 0.95 }}
                 className={`md:px-6 md:py-3 px-2 py-1 text-xs text-nowrap md:text-sm rounded-full flex items-center gap-2 ${
                   selectedCategory === category
                     ? "bg-blue-600 text-white"
