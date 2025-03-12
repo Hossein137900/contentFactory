@@ -68,8 +68,10 @@ export default function WorksPage() {
               <motion.button
                 key={category}
                 whileHover={{ scale: 1.05 }}
-                aria-label="Filter by category"
-                whileTap={{ scale: 0.95 }}
+                aria-label={`Filter by ${categoryMapping[category]}`}
+                role="button"
+
+                title={categoryMapping[category]}                whileTap={{ scale: 0.95 }}
                 className={`md:px-6 md:py-3 px-2 py-1 text-xs text-nowrap md:text-sm rounded-full flex items-center gap-2 ${
                   selectedCategory === category
                     ? "bg-blue-600 text-white"

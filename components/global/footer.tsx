@@ -181,6 +181,7 @@ const Footer = () => {
               variants={itemAnimation}
               href={item.link}
               target="_blank"
+              aria-label={`Visit our ${item.title} profile`}
               rel="noopener noreferrer"
               className="flex flex-col items-center gap-3 group"
               whileHover={{ scale: 1.1 }}

@@ -176,6 +176,8 @@ const HeroSection = () => {
       <div className="hidden md:block">
         <button
           onClick={() => navigateSlide("prev")}
+          aria-label="Toggle"
+          title="Toggle"
           className="absolute left-4 bottom-16 bg-white/20 hover:bg-white/30 p-3 rounded-full text-white transition-all"
           style={{ display: current === 0 ? "none" : "block" }}
         >
@@ -184,6 +186,8 @@ const HeroSection = () => {
 
         <button
           onClick={() => navigateSlide("next")}
+          aria-label="Toggle"
+          title="Toggle"
           className="absolute left-16 bottom-16 bg-white/20 hover:bg-white/30 p-3 rounded-full text-white transition-all"
           style={{ display: current === slides.length - 1 ? "none" : "block" }}
         >
@@ -196,6 +200,8 @@ const HeroSection = () => {
         {slides.map((slide) => (
           <motion.button
             key={slide.id}
+            aria-label="Toggle navigation"
+            title="Toggle navigation"
             className="w-3 h-3 rounded-full bg-white"
             animate={{
               opacity: current === slide.id - 1 ? 1 : 0.3,
