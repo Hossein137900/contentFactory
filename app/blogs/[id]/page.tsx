@@ -22,22 +22,23 @@ interface BlogPost {
 export default function BlogDetailPage() {
   const [blog, setBlog] = useState<BlogPost | null>(null);
   const params = usePathname();
-
   const id = params.split(":")[0].split("/")[2];
-  const fetchDetails = async () => {
-    const response = await fetch(`/api/blog/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const blogs = await response.json();
-    console.log(blogs, "blogs");
-    setBlog(blogs.blog);
-  };
+  
   useEffect(() => {
+    const fetchDetails = async () => {
+      const response = await fetch(`/api/blog/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const blogs = await response.json();
+      console.log(blogs, "blogs");
+      setBlog(blogs.blog);
+    };
+    
     fetchDetails();
-  }, []);
+  }, [id]);
 
   if (!blog) {
     return (

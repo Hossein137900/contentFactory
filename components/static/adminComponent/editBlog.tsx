@@ -153,11 +153,9 @@ export default function EditBlog() {
   useEffect(() => {
     fetchBlogs();
   }, []);
-  useEffect(() => {
-    if (editor && selectedBlog) {
-      editor.commands.setContent(selectedBlog.content);
-    }
-  }, [selectedBlog]);
+
+
+
   const setLink = () => {
     const previousUrl = editor?.getAttributes("link").href;
     const url = window.prompt("URL", previousUrl);
@@ -227,6 +225,12 @@ export default function EditBlog() {
     },
     [selectedBlog]
   );
+  useEffect(() => {
+    if (editor && selectedBlog) {
+      editor.commands.setContent(selectedBlog.content);
+    }
+  }, [selectedBlog, editor]);
+
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {

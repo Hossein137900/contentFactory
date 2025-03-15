@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BsArrowLeft, BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { motion } from "framer-motion";
 
 interface BlogPost {
   slug: string;

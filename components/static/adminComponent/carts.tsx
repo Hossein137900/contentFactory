@@ -156,7 +156,7 @@ export const Carts = () => {
           <p className="text-gray-400 mt-2">درخواست‌های جدید در اینجا نمایش داده خواهند شد</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-20">
           {requests.map((request) => (
             <motion.div
               key={request._id}

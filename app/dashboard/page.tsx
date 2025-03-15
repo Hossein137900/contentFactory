@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, JSX, useEffect } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaShoppingCart, FaUserEdit, FaChartBar } from "react-icons/fa";
+import { FaShoppingCart, FaUserEdit } from "react-icons/fa";
 import Profile from "@/components/static/dashboard/profile";
 import {Requests} from "@/components/static/dashboard/requests";
 

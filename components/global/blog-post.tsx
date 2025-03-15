@@ -45,7 +45,10 @@ export default function BlogPost(blogPostData: BlogPost) {
         sampleBlogPost.description ? sampleBlogPost.description : "بلاگ مشترک"
       );
     }
-  }, []);
+  }, [sampleBlogPost.seoTitle, sampleBlogPost.description]);
+
+
+
 
   return (
     <article className="px-4  " dir="rtl">

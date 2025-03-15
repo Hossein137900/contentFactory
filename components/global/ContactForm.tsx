@@ -3,11 +3,9 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import {
   FaUser,
-  FaEnvelope,
   FaTag,
   FaComment,
   FaPhone,
-  FaBuilding,
 } from "react-icons/fa";
 
 export default function ContactForm() {

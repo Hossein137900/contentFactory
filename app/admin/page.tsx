@@ -141,7 +141,7 @@ const AdminPage: React.FC = () => {
     };
 
     verifyAdmin();
-  }, []);
+  }, [router]);
   useEffect(() => {
     document.title = "مدرن لایت -  ادمین";
     const metaDescription = document.querySelector('meta[name="description"]');
