@@ -30,6 +30,7 @@ export async function GET(request: NextRequest) {
       username: user.username,
       phoneNumber: user.phoneNumber,
       id: user._id,
+      role: user.role,
     });
   } catch (error) {
     console.error("Error:", error);

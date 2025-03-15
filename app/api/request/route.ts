@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import connect from '@/lib/data';
 import Request from '@/models/request';
-
+import jwt from 'jsonwebtoken';
 export async function GET() {
     try {
         await connect();
@@ -15,15 +15,26 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         await connect();
-      
+       const token = request.headers.get("token")
+        if (!token) {
+            return NextResponse.json({ message: "Token missing" }, { status: 401 });
+        }
+        interface JwtPayloadWithId {
+            id: string;
+        }
+        const decodedToken = await jwt.verify(token,process.env.JWT_SECRET!) as JwtPayloadWithId;
+        console.log(decodedToken);
         const body =await request.json();
+        const userId = decodedToken.id;
         if (!body) {
             return NextResponse.json({ message: "All fields are required" }, { status: 400 });
         }
         const newRequest =
         await new Request({
-            ...body
+            ...body,
+            userId
         })
+        console.log(newRequest);
         await newRequest.save();
         return NextResponse.json({ message: "Request created successfully",newRequest }, { status: 201 });}
         catch (error) {
