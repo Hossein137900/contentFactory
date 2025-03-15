@@ -1,13 +1,15 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   FaHome,
   FaVideo,
   FaImages,
   FaUserAlt,
   FaEnvelope,
+  FaShareAlt,
 } from "react-icons/fa";
+import SocialModal from "./SocialModal";
 const menuItems = [
   {
     icon: FaHome,
@@ -25,7 +27,7 @@ const menuItems = [
     icon: FaImages,
     title: "گالری",
     color: "#60a5fa",
-    href: "/gallery",
+    href: "/works",
   },
   {
     icon: FaUserAlt,
@@ -39,12 +41,28 @@ const menuItems = [
     color: "#a78bfa",
     href: "/contact",
   },
+  {
+    icon: FaShareAlt,
+    title: "اشتراک گذاری",
+    color: "#34d399",
+    href: "#",
+    hasSocials: true,
+  },
 ];
 
 const Navbar = () => {
+  const shareButtonRef = useRef<HTMLAnchorElement>(null);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
   const [activeItem, setActiveItem] = useState(0);
+  const [socialModalOpen, setSocialModalOpen] = useState(false);
+
+  const [modalPosition, setModalPosition] = useState<{
+    top: number;
+    left?: number;
+    right?: number;
+  }>({ top: 0 });
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,6 +73,11 @@ const Navbar = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  useEffect(() => {
+    if (socialModalOpen) {
+      setIsOpen(true);
+    }
+  }, [socialModalOpen]);
 
   const DesktopNav = () => (
     <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50">
@@ -63,10 +86,14 @@ const Navbar = () => {
         animate={{ width: isOpen ? "16rem" : "5rem" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
+        onMouseLeave={() => {
+          if (!socialModalOpen) {
+            setIsOpen(false);
+          }
+        }}
         className="h-auto bg-gray-200/20 backdrop-blur-sm 
                  border-l border-gray-500/50
-                 flex flex-col items-start p-4
+                 flex flex-col items-center p-4
                  rounded-[40px] relative"
       >
         {/* Active Item Indicator */}
@@ -83,7 +110,19 @@ const Navbar = () => {
           <motion.a
             key={index}
             href={item.href}
-            onClick={() => setActiveItem(index)}
+            ref={item.hasSocials ? shareButtonRef : null}
+            onClick={(e) => {
+              if (item.hasSocials) {
+                e.preventDefault();
+                const rect = e.currentTarget.getBoundingClientRect();
+                setModalPosition({
+                  top: rect.top,
+                  right: window.innerWidth - rect.right + 70,
+                });
+                setSocialModalOpen(true);
+              }
+              setActiveItem(index);
+            }}
             className="flex items-center w-full gap-4 p-3 
                    text-gray-300 hover:text-[#2563eb]
                    rounded-xl z-10
@@ -115,40 +154,17 @@ const Navbar = () => {
             >
               {item.title}
             </motion.span>
-
-            {/* Tooltip for collapsed state */}
-            {/* <AnimatePresence>
-              {!isOpen && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="absolute right-16 bg-gray-800 px-3 py-1 rounded-lg
-                           text-sm whitespace-nowrap pointer-events-none
-                           opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  {item.title}
-                </motion.div>
-              )}
-            </AnimatePresence> */}
           </motion.a>
         ))}
-
-        {/* Active item progress indicator */}
-        {/* <motion.div
-          className="absolute left-4 top-0 h-1 w-1 rounded-full bg-gray-600/30"
-          style={{ scale: isOpen ? 1 : 0 }}
-        >
-          <motion.div
-            className="w-full py-5 rounded-full"
-            style={{
-              height: "100%",
-              backgroundColor: menuItems[activeItem].color,
-            }}
-            transition={{ duration: 0.3 }}
-          />
-        </motion.div> */}
       </motion.nav>
+      <SocialModal
+        isOpen={socialModalOpen}
+        onClose={() => {
+          setSocialModalOpen(false);
+          setIsOpen(false);
+        }}
+        modalPosition={modalPosition}
+      />
     </div>
   );
 
@@ -159,7 +175,18 @@ const Navbar = () => {
           <motion.a
             key={index}
             href={item.href}
-            onClick={() => setActiveItem(index)}
+            onClick={(e) => {
+              if (item.hasSocials) {
+                e.preventDefault();
+                const rect = e.currentTarget.getBoundingClientRect();
+                setModalPosition({
+                  top: rect.bottom + 10,
+                  left: rect.left,
+                });
+                setSocialModalOpen(true);
+              }
+              setActiveItem(index);
+            }}
             className="p-2 text-gray-300 transition-colors relative"
             whileTap={{ scale: 0.95 }}
           >
@@ -179,6 +206,11 @@ const Navbar = () => {
           </motion.a>
         ))}
       </nav>
+      <SocialModal
+        isOpen={socialModalOpen}
+        onClose={() => setSocialModalOpen(false)}
+        modalPosition={modalPosition}
+      />
     </div>
   );
 

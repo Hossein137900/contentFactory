@@ -35,25 +35,52 @@ const slides = [
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
   const [sliderWidth, setSliderWidth] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const controls = useAnimation();
   const touchStartRef = useRef({ x: 0, y: 0 });
   const isScrollingRef = useRef(false);
 
   useEffect(() => {
-    setSliderWidth(window.innerWidth);
-    const handleResize = () => {
-      setSliderWidth(window.innerWidth);
-      controls.set({ x: -current * window.innerWidth });
+    let interval: NodeJS.Timeout;
+
+    if (isAutoPlaying && window.innerWidth >= 768) {
+      // Only autoplay on desktop
+      interval = setInterval(() => {
+        const nextIndex = (current + 1) % slides.length;
+        setCurrent(nextIndex);
+        controls.start({
+          x: -nextIndex * sliderWidth,
+          transition: { type: "spring", stiffness: 300, damping: 25 },
+        });
+      }, 4000);
+    }
+
+    return () => clearInterval(interval);
+  }, [current, sliderWidth, controls, isAutoPlaying]);
+
+  // Pause autoplay on hover
+  const handleMouseEnter = () => setIsAutoPlaying(false);
+  const handleMouseLeave = () => setIsAutoPlaying(true);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const width = window.innerWidth;
+      setSliderWidth(width);
+      controls.set({ x: -current * width });
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
   }, [current, controls]);
 
   const navigateSlide = (direction: "prev" | "next") => {
-    const newIndex =
-      direction === "next"
-        ? (current + 1) % slides.length
-        : (current - 1 + slides.length) % slides.length;
+    let newIndex;
+    if (direction === "next") {
+      newIndex = current < slides.length - 1 ? current + 1 : current;
+    } else {
+      newIndex = current > 0 ? current - 1 : current;
+    }
 
     setCurrent(newIndex);
     controls.start({
@@ -61,19 +88,7 @@ const HeroSection = () => {
       transition: { type: "spring", stiffness: 300, damping: 30 },
     });
   };
-  // const handleDragStart = (event: MouseEvent | TouchEvent | PointerEvent) => {
-  //   if ("touches" in event) {
-  //     setDragStart({
-  //       x: event.touches[0].clientX,
-  //       y: event.touches[0].clientY,
-  //     });
-  //   } else {
-  //     setDragStart({
-  //       x: (event as MouseEvent).clientX,
-  //       y: (event as MouseEvent).clientY,
-  //     });
-  //   }
-  // };
+
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartRef.current = {
       x: e.touches[0].clientX,
@@ -88,14 +103,12 @@ const HeroSection = () => {
     const deltaX = e.touches[0].clientX - touchStartRef.current.x;
     const deltaY = e.touches[0].clientY - touchStartRef.current.y;
 
-    // Determine if the user is trying to scroll vertically
     if (!isScrollingRef.current) {
       isScrollingRef.current = Math.abs(deltaY) > Math.abs(deltaX);
     }
 
-    // If vertical scrolling is detected, don't prevent default behavior
-    if (isScrollingRef.current) {
-      e.stopPropagation();
+    if (!isScrollingRef.current) {
+      e.preventDefault();
     }
   };
 
@@ -114,31 +127,18 @@ const HeroSection = () => {
     }
   };
 
-  // const handleDragEnd = (event: MouseEvent | TouchEvent, info: PanInfo) => {
-  //   const swipeThreshold = sliderWidth * 0.2;
-  //   if (Math.abs(info.offset.x) > swipeThreshold) {
-  //     if (info.offset.x > 0 && current > 0) {
-  //       navigateSlide("prev");
-  //     } else if (info.offset.x < 0 && current < slides.length - 1) {
-  //       navigateSlide("next");
-  //     } else {
-  //       controls.start({ x: -current * sliderWidth });
-  //     }
-  //   } else {
-  //     controls.start({ x: -current * sliderWidth });
-  //   }
-  // };
-
   return (
-    <div className="min-h-screen relative">
+    <div className="h-screen relative overflow-hidden">
       <div
-        className="overflow-auto "
+        className="h-full w-full"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <motion.div
-          className="flex w-full h-full"
+          className="flex h-full"
           animate={controls}
           initial={false}
           style={{ x: -current * sliderWidth }}
@@ -147,7 +147,7 @@ const HeroSection = () => {
           {slides.map((slide) => (
             <div
               key={slide.id}
-              className="relative w-screen h-screen flex-shrink-0"
+              className="relative w-screen h-full flex-shrink-0"
             >
               <Image
                 src={slide.image}
@@ -172,36 +172,32 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      {/* Navigation buttons */}
       <div className="hidden md:block">
         <button
           onClick={() => navigateSlide("prev")}
-          aria-label="Toggle"
-          title="Toggle"
-          className="absolute left-4 bottom-16 bg-white/20 hover:bg-white/30 p-3 rounded-full text-white transition-all"
-          style={{ display: current === 0 ? "none" : "block" }}
+          className={`absolute left-4 bottom-16 bg-white/20 hover:bg-white/30 p-3 rounded-full text-white transition-all ${
+            current === 0 ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
         >
           <FaChevronLeft size={24} />
         </button>
 
         <button
           onClick={() => navigateSlide("next")}
-          aria-label="Toggle"
-          title="Toggle"
-          className="absolute left-16 bottom-16 bg-white/20 hover:bg-white/30 p-3 rounded-full text-white transition-all"
-          style={{ display: current === slides.length - 1 ? "none" : "block" }}
+          className={`absolute left-16 bottom-16 bg-white/20 hover:bg-white/30 p-3 rounded-full text-white transition-all ${
+            current === slides.length - 1
+              ? "opacity-0 pointer-events-none"
+              : "opacity-100"
+          }`}
         >
           <FaChevronRight size={24} />
         </button>
       </div>
 
-      {/* Dots navigation */}
       <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-3 z-10">
         {slides.map((slide) => (
           <motion.button
             key={slide.id}
-            aria-label="Toggle navigation"
-            title="Toggle navigation"
             className="w-3 h-3 rounded-full bg-white"
             animate={{
               opacity: current === slide.id - 1 ? 1 : 0.3,
