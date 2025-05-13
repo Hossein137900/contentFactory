@@ -28,37 +28,37 @@ const Avatar = () => {
     }
   }, [isHovered]);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          setIsLoading(false);
-          return;
-        }
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const token = localStorage.getItem('token');
+  //       if (!token) {
+  //         setIsLoading(false);
+  //         return;
+  //       }
 
-        const response = await fetch('/api/auth/id', {
-          method: 'GET',
-          headers: {
-            'token': token
-          }
-        });
+  //       const response = await fetch('/api/auth/id', {
+  //         method: 'GET',
+  //         headers: {
+  //           'token': token
+  //         }
+  //       });
 
-        if (response.ok) {
-          const data = await response.json();
-          setUserData(data);
-        } else {
-          console.error('Failed to fetch user data');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setUserData(data);
+  //       } else {
+  //         console.error('Failed to fetch user data');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching user data:', error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    fetchUserData();
-  }, []);
+  //   fetchUserData();
+  // }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
