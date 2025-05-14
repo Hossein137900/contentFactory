@@ -1471,7 +1471,7 @@ const HeroSection = () => {
                 "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 0 1px rgba(255, 255, 255, 0.1)",
             }}
           >
-            <IoIosArrowBack size={24} className="text-white" />
+            <IoIosArrowForward size={24} className="text-white" />
           </motion.button>
 
           {/* Slide indicators */}
@@ -1510,7 +1510,7 @@ const HeroSection = () => {
                 "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 0 1px rgba(255, 255, 255, 0.1)",
             }}
           >
-            <IoIosArrowForward size={24} className="text-white" />
+            <IoIosArrowBack size={24} className="text-white" />
           </motion.button>
 
           {/* Autoplay toggle button */}
