@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, createElement } from "react";
 import {
   motion,
   useScroll,
@@ -8,168 +8,9 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import Image from "next/image";
-// Import React Icons
-import {
-  FaPen,
-  FaShareAlt,
-  FaSearch,
-  FaVideo,
-  FaChartBar,
-} from "react-icons/fa";
 import { IoArrowUp } from "react-icons/io5";
 import { IoIosArrowBack } from "react-icons/io";
-import {
-  FaFacebook,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedin,
-  FaYoutube,
-} from "react-icons/fa";
-// Define the service item type
-interface ServiceItem {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  image: string;
-  color: string;
-  features: {
-    title: string;
-    description: string;
-  }[];
-}
-
-// Sample services data in Persian with React Icons
-const services: ServiceItem[] = [
-  {
-    id: "content-creation",
-    title: "تولید محتوا",
-    description:
-      "تولید محتوای حرفه‌ای متناسب با صدای برند و مخاطبان شما. از مقالات تا ویدیوها، ما محتوای جذابی می‌سازیم که با مخاطبان شما ارتباط برقرار می‌کند.",
-    icon: <FaPen />,
-    image: "/assets/images/cam1.jpg",
-    color: "#8B5CF6", // Violet
-    features: [
-      {
-        title: "تیم حرفه‌ای",
-        description: "تیم متخصص ما سال‌ها تجربه صنعتی را به هر پروژه می‌آورد.",
-      },
-      {
-        title: "استراتژی سفارشی",
-        description:
-          "ما استراتژی‌های متناسب با اهداف خاص کسب و کار شما توسعه می‌دهیم.",
-      },
-      {
-        title: "نتایج قابل اندازه‌گیری",
-        description: "موفقیت خود را با تحلیل‌ها و گزارش‌های جامع پیگیری کنید.",
-      },
-    ],
-  },
-  {
-    id: "social-media",
-    title: "مدیریت شبکه‌های اجتماعی",
-    description:
-      "مدیریت استراتژیک شبکه‌های اجتماعی برای رشد مخاطبان و تعامل. ما همه چیز را از برنامه‌ریزی محتوا تا تجزیه و تحلیل مدیریت می‌کنیم.",
-    icon: <FaShareAlt />,
-    image: "/assets/images/cam2.jpg",
-    color: "#EC4899", // Pink
-    features: [
-      {
-        title: "تیم حرفه‌ای",
-        description: "تیم متخصص ما سال‌ها تجربه صنعتی را به هر پروژه می‌آورد.",
-      },
-      {
-        title: "استراتژی سفارشی",
-        description:
-          "ما استراتژی‌های متناسب با اهداف خاص کسب و کار شما توسعه می‌دهیم.",
-      },
-      {
-        title: "نتایج قابل اندازه‌گیری",
-        description: "موفقیت خود را با تحلیل‌ها و گزارش‌های جامع پیگیری کنید.",
-      },
-    ],
-  },
-  {
-    id: "seo",
-    title: "بهینه‌سازی SEO",
-    description:
-      "استراتژی‌های SEO مبتنی بر داده برای بهبود دید و رتبه‌بندی شما. ما محتوای شما را برای جذب ترافیک ارگانیک بیشتر بهینه می‌کنیم.",
-    icon: <FaSearch />,
-    image: "/assets/images/cam3.jpg",
-    color: "#3B82F6", // Blue
-    features: [
-      {
-        title: "تیم حرفه‌ای",
-        description: "تیم متخصص ما سال‌ها تجربه صنعتی را به هر پروژه می‌آورد.",
-      },
-      {
-        title: "استراتژی سفارشی",
-        description:
-          "ما استراتژی‌های متناسب با اهداف خاص کسب و کار شما توسعه می‌دهیم.",
-      },
-      {
-        title: "نتایج قابل اندازه‌گیری",
-        description: "موفقیت خود را با تحلیل‌ها و گزارش‌های جامع پیگیری کنید.",
-      },
-    ],
-  },
-  {
-    id: "video-production",
-    title: "تولید ویدیو",
-    description:
-      "تولید ویدیوی با کیفیت بالا از مفهوم تا ویرایش نهایی. ما داستان‌های بصری جذابی می‌سازیم که توجه را جلب می‌کنند.",
-    icon: <FaVideo />,
-    image: "/assets/images/cam1.jpg",
-    color: "#10B981", // Emerald
-    features: [
-      {
-        title: "تیم حرفه‌ای",
-        description: "تیم متخصص ما سال‌ها تجربه صنعتی را به هر پروژه می‌آورد.",
-      },
-      {
-        title: "استراتژی سفارشی",
-        description:
-          "ما استراتژی‌های متناسب با اهداف خاص کسب و کار شما توسعه می‌دهیم.",
-      },
-      {
-        title: "نتایج قابل اندازه‌گیری",
-        description: "موفقیت خود را با تحلیل‌ها و گزارش‌های جامع پیگیری کنید.",
-      },
-    ],
-  },
-  {
-    id: "analytics",
-    title: "تحلیل محتوا",
-    description:
-      "تجزیه و تحلیل جامع عملکرد محتوا برای اصلاح استراتژی شما. ما داده‌ها را به بینش‌های قابل اجرا برای بهبود مداوم تبدیل می‌کنیم.",
-    icon: <FaChartBar />,
-    image: "/assets/images/cam2.jpg",
-    color: "#F59E0B", // Amber
-    features: [
-      {
-        title: "تیم حرفه‌ای",
-        description: "تیم متخصص ما سال‌ها تجربه صنعتی را به هر پروژه می‌آورد.",
-      },
-      {
-        title: "استراتژی سفارشی",
-        description:
-          "ما استراتژی‌های متناسب با اهداف خاص کسب و کار شما توسعه می‌دهیم.",
-      },
-      {
-        title: "نتایج قابل اندازه‌گیری",
-        description: "موفقیت خود را با تحلیل‌ها و گزارش‌های جامع پیگیری کنید.",
-      },
-    ],
-  },
-];
-
-const brandIcons = [
-  <FaFacebook key="facebook" />,
-  <FaTwitter key="twitter" />,
-  <FaInstagram key="instagram" />,
-  <FaLinkedin key="linkedin" />,
-  <FaYoutube key="youtube" />,
-];
+import { brandIcons, services } from "../../data/servicesShowcase";
 
 const ServicesShowcase = () => {
   const [activeService, setActiveService] = useState<string | null>(null);
@@ -178,8 +19,7 @@ const ServicesShowcase = () => {
   const detailsRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(0);
-    console.log(viewportHeight);
-
+  console.log(viewportHeight);
 
   // Scroll animation
   const { scrollYProgress } = useScroll({
@@ -366,7 +206,7 @@ const ServicesShowcase = () => {
                   }}
                 >
                   {/* React Icon */}
-                  <span className="text-white text-xl">{service.icon}</span>
+                  <span className="text-white text-xl">{service.icon && <service.icon />}</span>
                 </motion.div>
 
                 {/* Title */}
@@ -459,7 +299,7 @@ const ServicesShowcase = () => {
                   >
                     {/* React Icon */}
                     <span className="text-white text-2xl">
-                      {activeServiceData?.icon}
+                      {activeServiceData?.icon && <activeServiceData.icon />}
                     </span>
                   </motion.div>
 
@@ -710,7 +550,7 @@ const ServicesShowcase = () => {
               className="w-24 h-12 relative grayscale hover:grayscale-0 transition-all duration-300"
             >
               <div className="w-full h-full bg-white/20 rounded-full backdrop-blur-sm flex items-center justify-center">
-                <span className="text-white/70 text-2xl">{item}</span>
+                <span className="text-white/70 text-2xl">{item && createElement(item)}</span>
               </div>
             </div>
           ))}
