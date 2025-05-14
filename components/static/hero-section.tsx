@@ -16,108 +16,108 @@ const slides = [
   {
     id: 1,
     image: "/assets/images/cam1.jpg",
-    title: "Welcome to Content Factory",
-    subtitle: "Where creativity meets innovation",
+    title: "به کارخانه محتوا خوش آمدید",
+    subtitle: "جایی که خلاقیت با نوآوری همراه می‌شود",
     color: "#8B5CF6", // Violet
   },
   {
     id: 2,
     image: "/assets/images/cam2.jpg",
-    title: "Create Amazing Content",
-    subtitle: "Elevate your digital presence",
+    title: "محتوای شگفت‌انگیز بسازید",
+    subtitle: "حضور دیجیتال خود را ارتقا دهید",
     color: "#EC4899", // Pink
   },
   {
     id: 3,
     image: "/assets/images/cam3.jpg",
-    title: "Grow Your Business",
-    subtitle: "Scale with confidence",
+    title: "کسب و کار خود را رشد دهید",
+    subtitle: "با اطمینان توسعه پیدا کنید",
     color: "#3B82F6", // Blue
   },
   {
     id: 4,
     image: "/assets/images/cam1.jpg",
-    title: "Scale Your Impact",
-    subtitle: "Reach new audiences",
+    title: "تأثیر خود را گسترش دهید",
+    subtitle: "به مخاطبان جدید دست پیدا کنید",
     color: "#10B981", // Emerald
   },
   {
     id: 5,
     image: "/assets/images/cam2.jpg",
-    title: "Transform Your Brand",
-    subtitle: "Stand out in the digital universe",
+    title: "برند خود را متحول کنید",
+    subtitle: "در دنیای دیجیتال متمایز باشید",
     color: "#F59E0B", // Amber
   },
 ];
 
-// Generate stars with depth layers for parallax
-const generateStars = () => {
-  // Create 3 layers of stars with different parallax factors
+// Pre-generate fixed stars and cosmic elements
+const preGeneratedStars = Array.from({ length: 160 }, (_, i) => {
+  // Use index-based "randomness" instead of Math.random()
+  const layerIndex = i < 80 ? 0 : i < 130 ? 1 : 2;
   const layers = [
-    {
-      count: 80,
-      size: [0.5, 1.5],
-      opacity: [0.3, 0.6],
-      factor: 10,
-      speed: [3, 6],
-    },
-    {
-      count: 50,
-      size: [1, 2.5],
-      opacity: [0.5, 0.8],
-      factor: 20,
-      speed: [4, 8],
-    },
-    {
-      count: 30,
-      size: [1.5, 3],
-      opacity: [0.6, 0.9],
-      factor: 30,
-      speed: [5, 10],
-    },
+    { size: [0.5, 1.5], opacity: [0.3, 0.6], factor: 10, speed: [3, 6] },
+    { size: [1, 2.5], opacity: [0.5, 0.8], factor: 20, speed: [4, 8] },
+    { size: [1.5, 3], opacity: [0.6, 0.9], factor: 30, speed: [5, 10] },
   ];
 
-  let allStars: any[] = [];
+  const layer = layers[layerIndex];
+  const indexInLayer = i - (layerIndex === 0 ? 0 : layerIndex === 1 ? 80 : 130);
 
-  layers.forEach((layer, layerIndex) => {
-    const stars = Array.from({ length: layer.count }, () => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * (layer.size[1] - layer.size[0]) + layer.size[0],
-      opacity:
-        Math.random() * (layer.opacity[1] - layer.opacity[0]) +
-        layer.opacity[0],
-      animationDuration:
-        Math.random() * (layer.speed[1] - layer.speed[0]) + layer.speed[0],
-      animationDelay: Math.random() * 5,
-      parallaxFactor: layer.factor,
-      layer: layerIndex,
-    }));
+  // Use deterministic values based on index
+  const x = (indexInLayer * 17) % 100;
+  const y = (indexInLayer * 23) % 100;
+  const sizeRange = layer.size[1] - layer.size[0];
+  const size = layer.size[0] + ((indexInLayer % 10) / 10) * sizeRange;
+  const opacityRange = layer.opacity[1] - layer.opacity[0];
+  const opacity = layer.opacity[0] + ((indexInLayer % 10) / 10) * opacityRange;
+  const speedRange = layer.speed[1] - layer.speed[0];
+  const animationDuration =
+    layer.speed[0] + ((indexInLayer % 10) / 10) * speedRange;
 
-    allStars = [...allStars, ...stars];
-  });
+  return {
+    x,
+    y,
+    size,
+    opacity,
+    animationDuration,
+    animationDelay: indexInLayer % 5,
+    parallaxFactor: layer.factor,
+    layer: layerIndex,
+  };
+});
 
-  return allStars;
-};
+// Pre-generate cosmic elements
+const preGeneratedCosmicElements = Array.from({ length: 5 }, (_, i) => {
+  // Deterministic values based on index
+  const hue = (i * 72) % 360; // Evenly spaced hues
+  const size = 50 + i * 15;
 
-// Generate cosmic elements
-const generateCosmicElements = (count: number) => {
-  return Array.from({ length: count }, () => {
-    const hue = Math.floor(Math.random() * 360);
-    const size = Math.random() * 100 + 50;
+  return {
+    x: 20 + ((i * 15) % 80),
+    y: 15 + ((i * 17) % 70),
+    size,
+    color: `hsla(${hue}, 70%, 60%, 0.15)`,
+    animationDuration: 15 + i * 2,
+    animationDelay: i * 2,
+    parallaxFactor: 10 + i * 7,
+    rotation: i * 72,
+  };
+});
 
-    return {
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size,
-      color: `hsla(${hue}, 70%, 60%, 0.15)`,
-      animationDuration: Math.random() * 20 + 15,
-      animationDelay: Math.random() * 10,
-      parallaxFactor: Math.random() * 40 + 10,
-      rotation: Math.random() * 360,
-    };
-  });
-};
+// Pre-generate particles
+const preGeneratedParticles = Array.from({ length: 20 }, (_, i) => {
+  const particleSize = 1 + (i % 3) + 1;
+  const baseX = 10 + ((i * 5) % 90);
+  const baseY = 5 + ((i * 7) % 90);
+
+  return {
+    baseX,
+    baseY,
+    size: particleSize,
+    duration: 10 + (i % 10),
+    delay: i % 5,
+  };
+});
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
@@ -131,6 +131,8 @@ const HeroSection = () => {
   const [progress, setProgress] = useState(0);
   const [progressColor, setProgressColor] = useState(slides[0].color);
 
+  console.log(dimensions, progress, progressColor);
+
   // Mouse position for parallax effect
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -139,12 +141,717 @@ const HeroSection = () => {
   const smoothMouseX = useSpring(mouseX, { stiffness: 50, damping: 20 });
   const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 20 });
 
-  // Generate stars and cosmic elements
-  const stars = useRef(generateStars());
-  const cosmicElements = useRef(generateCosmicElements(5));
-
   // Progress animation
   const progressAnimation = useAnimation();
+
+  // Create all the transform values at the top level
+  // For cosmic elements
+  const cosmicX0 = useTransform(
+    smoothMouseX,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[0].x -
+        preGeneratedCosmicElements[0].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[0].x +
+        preGeneratedCosmicElements[0].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+  const cosmicY0 = useTransform(
+    smoothMouseY,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[0].y -
+        preGeneratedCosmicElements[0].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[0].y +
+        preGeneratedCosmicElements[0].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+
+  const cosmicX1 = useTransform(
+    smoothMouseX,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[1].x -
+        preGeneratedCosmicElements[1].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[1].x +
+        preGeneratedCosmicElements[1].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+  const cosmicY1 = useTransform(
+    smoothMouseY,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[1].y -
+        preGeneratedCosmicElements[1].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[1].y +
+        preGeneratedCosmicElements[1].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+
+  const cosmicX2 = useTransform(
+    smoothMouseX,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[2].x -
+        preGeneratedCosmicElements[2].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[2].x +
+        preGeneratedCosmicElements[2].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+  const cosmicY2 = useTransform(
+    smoothMouseY,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[2].y -
+        preGeneratedCosmicElements[2].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[2].y +
+        preGeneratedCosmicElements[2].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+
+  const cosmicX3 = useTransform(
+    smoothMouseX,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[3].x -
+        preGeneratedCosmicElements[3].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[3].x +
+        preGeneratedCosmicElements[3].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+  const cosmicY3 = useTransform(
+    smoothMouseY,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[3].y -
+        preGeneratedCosmicElements[3].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[3].y +
+        preGeneratedCosmicElements[3].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+
+  const cosmicX4 = useTransform(
+    smoothMouseX,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[4].x -
+        preGeneratedCosmicElements[4].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[4].x +
+        preGeneratedCosmicElements[4].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+  const cosmicY4 = useTransform(
+    smoothMouseY,
+    [-0.5, 0.5],
+    [
+      `${
+        preGeneratedCosmicElements[4].y -
+        preGeneratedCosmicElements[4].parallaxFactor * 0.05
+      }%`,
+      `${
+        preGeneratedCosmicElements[4].y +
+        preGeneratedCosmicElements[4].parallaxFactor * 0.05
+      }%`,
+    ]
+  );
+
+  // For light beams
+  const lightBeam1Left = useTransform(
+    smoothMouseX,
+    [-0.5, 0.5],
+    ["20%", "30%"]
+  );
+  const lightBeam2Right = useTransform(
+    smoothMouseX,
+    [-0.5, 0.5],
+    ["30%", "35%"]
+  );
+
+  // For orbs
+  const orb1Left = useTransform(smoothMouseX, [-0.5, 0.5], ["10%", "15%"]);
+  const orb1Top = useTransform(smoothMouseY, [-0.5, 0.5], ["20%", "25%"]);
+
+  const orb2Right = useTransform(smoothMouseX, [-0.5, 0.5], ["15%", "20%"]);
+  const orb2Bottom = useTransform(smoothMouseY, [-0.5, 0.5], ["25%", "30%"]);
+
+  // For animated light beams
+  const lightBeam3Left = useTransform(
+    smoothMouseX,
+    [-0.5, 0.5],
+    ["70%", "75%"]
+  );
+  const lightBeam3Top = useTransform(smoothMouseY, [-0.5, 0.5], ["10%", "15%"]);
+
+  const lightBeam4Left = useTransform(
+    smoothMouseX,
+    [-0.5, 0.5],
+    ["25%", "30%"]
+  );
+  const lightBeam4Bottom = useTransform(
+    smoothMouseY,
+    [-0.5, 0.5],
+    ["20%", "25%"]
+  );
+
+  // For particles - we'll use a simplified approach with fewer particles
+  const particleTransforms = [
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[0].baseX - 10}%`,
+          `${preGeneratedParticles[0].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[0].baseY - 5}%`,
+          `${preGeneratedParticles[0].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[0].size,
+      duration: preGeneratedParticles[0].duration,
+      delay: preGeneratedParticles[0].delay,
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[1].baseX - 10}%`,
+          `${preGeneratedParticles[1].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[1].baseY - 5}%`,
+          `${preGeneratedParticles[1].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[1].size,
+      duration: preGeneratedParticles[1].duration,
+      delay: preGeneratedParticles[1].delay,
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[2].baseX - 10}%`,
+          `${preGeneratedParticles[2].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[2].baseY - 5}%`,
+          `${preGeneratedParticles[2].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[2].size,
+      duration: preGeneratedParticles[2].duration,
+      delay: preGeneratedParticles[2].delay,
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[3].baseX - 10}%`,
+          `${preGeneratedParticles[3].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[3].baseY - 5}%`,
+          `${preGeneratedParticles[3].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[3].size,
+      duration: preGeneratedParticles[3].duration,
+      delay: preGeneratedParticles[3].delay,
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[4].baseX - 10}%`,
+          `${preGeneratedParticles[4].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[4].baseY - 5}%`,
+          `${preGeneratedParticles[4].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[4].size,
+      duration: preGeneratedParticles[4].duration,
+      delay: preGeneratedParticles[4].delay,
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[5].baseX - 10}%`,
+          `${preGeneratedParticles[5].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[5].baseY - 5}%`,
+          `${preGeneratedParticles[5].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[5].size,
+      duration: preGeneratedParticles[5].duration,
+      delay: preGeneratedParticles[5].delay,
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[6].baseX - 10}%`,
+          `${preGeneratedParticles[6].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[6].baseY - 5}%`,
+          `${preGeneratedParticles[6].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[6].size,
+      duration: preGeneratedParticles[6].duration,
+      delay: preGeneratedParticles[6].delay,
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[7].baseX - 10}%`,
+          `${preGeneratedParticles[7].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[7].baseY - 5}%`,
+          `${preGeneratedParticles[7].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[7].size,
+      duration: preGeneratedParticles[7].duration,
+      delay: preGeneratedParticles[7].delay,
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[8].baseX - 10}%`,
+          `${preGeneratedParticles[8].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[8].baseY - 5}%`,
+          `${preGeneratedParticles[8].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[8].size,
+      duration: preGeneratedParticles[8].duration,
+      delay: preGeneratedParticles[8].delay,
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[9].baseX - 10}%`,
+          `${preGeneratedParticles[9].baseX + 10}%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${preGeneratedParticles[9].baseY - 5}%`,
+          `${preGeneratedParticles[9].baseY + 5}%`,
+        ]
+      ),
+      size: preGeneratedParticles[9].size,
+      duration: preGeneratedParticles[9].duration,
+      delay: preGeneratedParticles[9].delay,
+    },
+  ];
+
+  // For stars - we'll use a simplified approach with fewer stars
+  const starTransforms = [
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[0].x - preGeneratedStars[0].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[0].x + preGeneratedStars[0].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[0].y - preGeneratedStars[0].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[0].y + preGeneratedStars[0].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[0],
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[10].x -
+            preGeneratedStars[10].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[10].x +
+            preGeneratedStars[10].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[10].y -
+            preGeneratedStars[10].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[10].y +
+            preGeneratedStars[10].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[10],
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[20].x -
+            preGeneratedStars[20].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[20].x +
+            preGeneratedStars[20].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[20].y -
+            preGeneratedStars[20].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[20].y +
+            preGeneratedStars[20].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[20],
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[30].x -
+            preGeneratedStars[30].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[30].x +
+            preGeneratedStars[30].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[30].y -
+            preGeneratedStars[30].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[30].y +
+            preGeneratedStars[30].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[30],
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[40].x -
+            preGeneratedStars[40].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[40].x +
+            preGeneratedStars[40].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[40].y -
+            preGeneratedStars[40].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[40].y +
+            preGeneratedStars[40].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[40],
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[50].x -
+            preGeneratedStars[50].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[50].x +
+            preGeneratedStars[50].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[50].y -
+            preGeneratedStars[50].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[50].y +
+            preGeneratedStars[50].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[50],
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[60].x -
+            preGeneratedStars[60].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[60].x +
+            preGeneratedStars[60].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[60].y -
+            preGeneratedStars[60].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[60].y +
+            preGeneratedStars[60].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[60],
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[70].x -
+            preGeneratedStars[70].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[70].x +
+            preGeneratedStars[70].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[70].y -
+            preGeneratedStars[70].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[70].y +
+            preGeneratedStars[70].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[70],
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[80].x -
+            preGeneratedStars[80].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[80].x +
+            preGeneratedStars[80].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[80].y -
+            preGeneratedStars[80].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[80].y +
+            preGeneratedStars[80].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[80],
+    },
+    {
+      x: useTransform(
+        smoothMouseX,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[90].x -
+            preGeneratedStars[90].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[90].x +
+            preGeneratedStars[90].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      y: useTransform(
+        smoothMouseY,
+        [-0.5, 0.5],
+        [
+          `${
+            preGeneratedStars[90].y -
+            preGeneratedStars[90].parallaxFactor * 0.05
+          }%`,
+          `${
+            preGeneratedStars[90].y +
+            preGeneratedStars[90].parallaxFactor * 0.05
+          }%`,
+        ]
+      ),
+      star: preGeneratedStars[90],
+    },
+  ];
 
   // Update dimensions on mount and resize
   useEffect(() => {
@@ -384,113 +1091,189 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-[#030014] relative overflow-hidden">
+    <div
+      className="min-h-screen flex items-center justify-center py-12 px-4 bg-[#030014] relative overflow-hidden"
+      dir="rtl"
+    >
       {/* Deep space background with stars and cosmic elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Base background with gradient */}
         <div className="absolute inset-0 bg-gradient-radial from-[#0F0728] via-[#070219] to-[#030014]"></div>
 
         {/* Cosmic elements - nebulae, gas clouds, etc. */}
-        {cosmicElements.current.map((element, i) => {
-          const elementX = useTransform(
-            smoothMouseX,
-            [-0.5, 0.5],
-            [
-              `${element.x - element.parallaxFactor * 0.05}%`,
-              `${element.x + element.parallaxFactor * 0.05}%`,
-            ]
-          );
+        <motion.div
+          key="cosmic-0"
+          className="absolute rounded-full blur-3xl"
+          style={{
+            width: `${preGeneratedCosmicElements[0].size}px`,
+            height: `${preGeneratedCosmicElements[0].size}px`,
+            background: preGeneratedCosmicElements[0].color,
+            left: cosmicX0,
+            top: cosmicY0,
+            transform: `rotate(${preGeneratedCosmicElements[0].rotation}deg)`,
+          }}
+          animate={{
+            opacity: [0.5, 0.8, 0.5],
+            scale: [1, 1.1, 1],
+            rotate: [
+              preGeneratedCosmicElements[0].rotation,
+              preGeneratedCosmicElements[0].rotation + 10,
+              preGeneratedCosmicElements[0].rotation,
+            ],
+          }}
+          transition={{
+            duration: preGeneratedCosmicElements[0].animationDuration,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
 
-          const elementY = useTransform(
-            smoothMouseY,
-            [-0.5, 0.5],
-            [
-              `${element.y - element.parallaxFactor * 0.05}%`,
-              `${element.y + element.parallaxFactor * 0.05}%`,
-            ]
-          );
+        <motion.div
+          key="cosmic-1"
+          className="absolute rounded-full blur-3xl"
+          style={{
+            width: `${preGeneratedCosmicElements[1].size}px`,
+            height: `${preGeneratedCosmicElements[1].size}px`,
+            background: preGeneratedCosmicElements[1].color,
+            left: cosmicX1,
+            top: cosmicY1,
+            transform: `rotate(${preGeneratedCosmicElements[1].rotation}deg)`,
+          }}
+          animate={{
+            opacity: [0.5, 0.8, 0.5],
+            scale: [1, 1.1, 1],
+            rotate: [
+              preGeneratedCosmicElements[1].rotation,
+              preGeneratedCosmicElements[1].rotation + 10,
+              preGeneratedCosmicElements[1].rotation,
+            ],
+          }}
+          transition={{
+            duration: preGeneratedCosmicElements[1].animationDuration,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
 
-          return (
-            <motion.div
-              key={`cosmic-${i}`}
-              className="absolute rounded-full blur-3xl"
-              style={{
-                width: `${element.size}px`,
-                height: `${element.size}px`,
-                background: element.color,
-                left: elementX,
-                top: elementY,
-                transform: `rotate(${element.rotation}deg)`,
-              }}
-              animate={{
-                opacity: [0.5, 0.8, 0.5],
-                scale: [1, 1.1, 1],
-                rotate: [
-                  element.rotation,
-                  element.rotation + 10,
-                  element.rotation,
-                ],
-              }}
-              transition={{
-                duration: element.animationDuration,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
-            />
-          );
-        })}
+        <motion.div
+          key="cosmic-2"
+          className="absolute rounded-full blur-3xl"
+          style={{
+            width: `${preGeneratedCosmicElements[2].size}px`,
+            height: `${preGeneratedCosmicElements[2].size}px`,
+            background: preGeneratedCosmicElements[2].color,
+            left: cosmicX2,
+            top: cosmicY2,
+            transform: `rotate(${preGeneratedCosmicElements[2].rotation}deg)`,
+          }}
+          animate={{
+            opacity: [0.5, 0.8, 0.5],
+            scale: [1, 1.1, 1],
+            rotate: [
+              preGeneratedCosmicElements[2].rotation,
+              preGeneratedCosmicElements[2].rotation + 10,
+              preGeneratedCosmicElements[2].rotation,
+            ],
+          }}
+          transition={{
+            duration: preGeneratedCosmicElements[2].animationDuration,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
 
-        {/* Stars with parallax effect */}
-        {stars.current.map((star, i) => {
-          // Create transforms for each star based on mouse position and layer
-          const parallaxStrength = star.parallaxFactor * 0.05;
+        <motion.div
+          key="cosmic-3"
+          className="absolute rounded-full blur-3xl"
+          style={{
+            width: `${preGeneratedCosmicElements[3].size}px`,
+            height: `${preGeneratedCosmicElements[3].size}px`,
+            background: preGeneratedCosmicElements[3].color,
+            left: cosmicX3,
+            top: cosmicY3,
+            transform: `rotate(${preGeneratedCosmicElements[3].rotation}deg)`,
+          }}
+          animate={{
+            opacity: [0.5, 0.8, 0.5],
+            scale: [1, 1.1, 1],
+            rotate: [
+              preGeneratedCosmicElements[3].rotation,
+              preGeneratedCosmicElements[3].rotation + 10,
+              preGeneratedCosmicElements[3].rotation,
+            ],
+          }}
+          transition={{
+            duration: preGeneratedCosmicElements[3].animationDuration,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
 
-          const starX = useTransform(
-            smoothMouseX,
-            [-0.5, 0.5],
-            [`${star.x - parallaxStrength}%`, `${star.x + parallaxStrength}%`]
-          );
+        <motion.div
+          key="cosmic-4"
+          className="absolute rounded-full blur-3xl"
+          style={{
+            width: `${preGeneratedCosmicElements[4].size}px`,
+            height: `${preGeneratedCosmicElements[4].size}px`,
+            background: preGeneratedCosmicElements[4].color,
+            left: cosmicX4,
+            top: cosmicY4,
+            transform: `rotate(${preGeneratedCosmicElements[4].rotation}deg)`,
+          }}
+          animate={{
+            opacity: [0.5, 0.8, 0.5],
+            scale: [1, 1.1, 1],
+            rotate: [
+              preGeneratedCosmicElements[4].rotation,
+              preGeneratedCosmicElements[4].rotation + 10,
+              preGeneratedCosmicElements[4].rotation,
+            ],
+          }}
+          transition={{
+            duration: preGeneratedCosmicElements[4].animationDuration,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
 
-          const starY = useTransform(
-            smoothMouseY,
-            [-0.5, 0.5],
-            [`${star.y - parallaxStrength}%`, `${star.y + parallaxStrength}%`]
-          );
-
-          return (
-            <motion.div
-              key={`star-${i}`}
-              className="absolute rounded-full"
-              style={{
-                width: `${star.size}px`,
-                height: `${star.size}px`,
-                backgroundColor: "white",
-                boxShadow: `0 0 ${star.size * 1.5}px rgba(255, 255, 255, ${
-                  star.opacity
-                })`,
-                left: starX,
-                top: starY,
-                opacity: star.opacity,
-              }}
-              animate={{
-                opacity: [star.opacity, star.opacity * 1.5, star.opacity],
-                scale: [1, 1.3, 1],
-              }}
-              transition={{
-                duration: star.animationDuration,
-                delay: star.animationDelay,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
-            />
-          );
-        })}
+        {/* Stars with parallax effect - using a limited set */}
+        {starTransforms.map((transform, i) => (
+          <motion.div
+            key={`star-${i}`}
+            className="absolute rounded-full"
+            style={{
+              width: `${transform.star.size}px`,
+              height: `${transform.star.size}px`,
+              backgroundColor: "white",
+              boxShadow: `0 0 ${
+                transform.star.size * 1.5
+              }px rgba(255, 255, 255, ${transform.star.opacity})`,
+              left: transform.x,
+              top: transform.y,
+              opacity: transform.star.opacity,
+            }}
+            animate={{
+              opacity: [
+                transform.star.opacity,
+                transform.star.opacity * 1.5,
+                transform.star.opacity,
+              ],
+              scale: [1, 1.3, 1],
+            }}
+            transition={{
+              duration: transform.star.animationDuration,
+              delay: transform.star.animationDelay,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          />
+        ))}
 
         {/* Subtle light beams */}
         <motion.div
           className="absolute top-0 left-1/4 w-[2px] h-[30vh] bg-gradient-to-b from-transparent via-purple-500/20 to-transparent"
           style={{
-            left: useTransform(smoothMouseX, [-0.5, 0.5], ["20%", "30%"]),
+            left: lightBeam1Left,
           }}
           animate={{
             height: ["30vh", "40vh", "30vh"],
@@ -506,7 +1289,7 @@ const HeroSection = () => {
         <motion.div
           className="absolute top-0 right-1/3 w-[1px] h-[20vh] bg-gradient-to-b from-transparent via-blue-500/20 to-transparent"
           style={{
-            right: useTransform(smoothMouseX, [-0.5, 0.5], ["30%", "35%"]),
+            right: lightBeam2Right,
           }}
           animate={{
             height: ["20vh", "25vh", "20vh"],
@@ -634,20 +1417,37 @@ const HeroSection = () => {
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Explore Now
+                اکتشاف کنید
               </motion.button>
             </div>
           </motion.div>
         </AnimatePresence>
 
-        {/* Progress bar */}
-        <div className="absolute bottom-28 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-white/20 rounded-full overflow-hidden z-30">
-          <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: progressColor }}
-            initial={{ scaleX: 0, originX: 0 }}
-            animate={progressAnimation}
-          />
+        {/* Floating particles inside the slider with mouse interaction */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {particleTransforms.map((transform, i) => (
+            <motion.div
+              key={`particle-${i}`}
+              className="absolute rounded-full"
+              style={{
+                width: transform.size + "px",
+                height: transform.size + "px",
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                boxShadow: "0 0 4px rgba(255, 255, 255, 0.8)",
+                left: transform.x,
+                top: transform.y,
+              }}
+              animate={{
+                y: [0, -30],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: transform.duration,
+                repeat: Infinity,
+                delay: transform.delay,
+              }}
+            />
+          ))}
         </div>
 
         {/* Navigation controls with glass neomorphism */}
@@ -734,48 +1534,6 @@ const HeroSection = () => {
             )}
           </motion.button>
         </div>
-
-        {/* Floating particles inside the slider with mouse interaction */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[...Array(20)].map((_, i) => {
-            const particleSize = Math.random() * 3 + 1;
-            const particleX = useTransform(
-              smoothMouseX,
-              [-0.5, 0.5],
-              [`${Math.random() * 100 - 10}%`, `${Math.random() * 100 + 10}%`]
-            );
-
-            const particleY = useTransform(
-              smoothMouseY,
-              [-0.5, 0.5],
-              [`${Math.random() * 100 - 5}%`, `${Math.random() * 100 + 5}%`]
-            );
-
-            return (
-              <motion.div
-                key={`particle-${i}`}
-                className="absolute rounded-full"
-                style={{
-                  width: particleSize + "px",
-                  height: particleSize + "px",
-                  backgroundColor: "rgba(255, 255, 255, 0.8)",
-                  boxShadow: "0 0 4px rgba(255, 255, 255, 0.8)",
-                  left: particleX,
-                  top: particleY,
-                }}
-                animate={{
-                  y: [0, -30],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: Math.random() * 10 + 10,
-                  repeat: Infinity,
-                  delay: Math.random() * 5,
-                }}
-              />
-            );
-          })}
-        </div>
       </div>
 
       {/* Slide number indicator */}
@@ -792,8 +1550,6 @@ const HeroSection = () => {
         <span>{slides.length.toString().padStart(2, "0")}</span>
       </div>
 
-      {/* Add CSS classes to your global styles */}
-
       {/* Floating orbs with glass effect */}
       <motion.div
         className="absolute w-32 h-32 rounded-full pointer-events-none"
@@ -804,8 +1560,8 @@ const HeroSection = () => {
             "inset 0 0 20px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.1)",
           backdropFilter: "blur(5px)",
           border: "1px solid rgba(255, 255, 255, 0.1)",
-          left: useTransform(smoothMouseX, [-0.5, 0.5], ["10%", "15%"]),
-          top: useTransform(smoothMouseY, [-0.5, 0.5], ["20%", "25%"]),
+          left: orb1Left,
+          top: orb1Top,
         }}
         animate={{
           scale: [1, 1.1, 1],
@@ -827,8 +1583,8 @@ const HeroSection = () => {
             "inset 0 0 15px rgba(255, 255, 255, 0.2), 0 0 20px rgba(255, 255, 255, 0.1)",
           backdropFilter: "blur(5px)",
           border: "1px solid rgba(255, 255, 255, 0.1)",
-          right: useTransform(smoothMouseX, [-0.5, 0.5], ["15%", "20%"]),
-          bottom: useTransform(smoothMouseY, [-0.5, 0.5], ["25%", "30%"]),
+          right: orb2Right,
+          bottom: orb2Bottom,
         }}
         animate={{
           scale: [1, 1.15, 1],
@@ -931,8 +1687,8 @@ const HeroSection = () => {
       <motion.div
         className="absolute h-[200px] w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"
         style={{
-          left: useTransform(smoothMouseX, [-0.5, 0.5], ["70%", "75%"]),
-          top: useTransform(smoothMouseY, [-0.5, 0.5], ["10%", "15%"]),
+          left: lightBeam3Left,
+          top: lightBeam3Top,
           transform: "rotate(30deg)",
         }}
         animate={{
@@ -949,8 +1705,8 @@ const HeroSection = () => {
       <motion.div
         className="absolute h-[150px] w-[1px] bg-gradient-to-b from-transparent via-white/15 to-transparent"
         style={{
-          left: useTransform(smoothMouseX, [-0.5, 0.5], ["25%", "30%"]),
-          bottom: useTransform(smoothMouseY, [-0.5, 0.5], ["20%", "25%"]),
+          left: lightBeam4Left,
+          bottom: lightBeam4Bottom,
           transform: "rotate(-20deg)",
         }}
         animate={{
@@ -967,29 +1723,5 @@ const HeroSection = () => {
     </div>
   );
 };
-
-// Add these CSS classes to your global styles
-const globalStyles = `
-.perspective-1200 {
-  perspective: 1200px;
-}
-
-.transform-style-3d {
-  transform-style: preserve-3d;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.bg-gradient-radial {
-  background: radial-gradient(circle, var(--tw-gradient-from) 0%, var(--tw-gradient-via) 50%, var(--tw-gradient-to) 100%);
-}
-`;
 
 export default HeroSection;

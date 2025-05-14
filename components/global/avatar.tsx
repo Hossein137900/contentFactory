@@ -12,9 +12,9 @@ interface UserData {
 }
 
 const Avatar = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData] = useState<UserData | null>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading] = useState(true);
   const [contentHeight, setContentHeight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
   const router = useRouter();

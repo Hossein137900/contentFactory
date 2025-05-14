@@ -3,6 +3,7 @@ import ImagePan from "@/components/global/image-pan";
 import BlogSlider from "@/components/global/page";
 import ScrollingText from "@/components/global/ParallaxText";
 import AboutSection from "@/components/global/two-box";
+import AboutUs from "@/components/static/aboutUs";
 import ContactForm from "@/components/static/contactForm";
 import GalleryGrid from "@/components/static/galleryGrid";
 import HeroSection from "@/components/static/hero-section";
@@ -20,6 +21,7 @@ export default function Home() {
         <GalleryGrid />
         <ContactForm />
         <ProjectSlider />
+        <AboutUs />
 
         <div className="relative">
           {" "}

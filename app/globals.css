@@ -219,3 +219,57 @@ body {
   animation-delay: 4s;
 }
 /* End gallery grid  */
+
+
+
+/* Start of  Custom styles for the AboutUs component */
+
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-from) 0%, var(--tw-gradient-via) 50%, var(--tw-gradient-to) 100%);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* Glass morphism effects */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Timeline connector styles */
+.timeline-connector::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: linear-gradient(to bottom, #8B5CF6, #EC4899);
+  transform: translateX(-50%);
+}
+
+/* End of  Custom styles for the AboutUs component */
+
+
+

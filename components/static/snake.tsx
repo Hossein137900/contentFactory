@@ -10,6 +10,8 @@ const SnakeLine = () => {
   const [headPosition, setHeadPosition] = useState({ x: 0, y: 0 });
   const [snakePath, setSnakePath] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
+      console.log(windowSize);
+
 
   // Create smooth scroll progress
   const smoothProgress = useSpring(scrollYProgress, {

@@ -178,6 +178,8 @@ const ServicesShowcase = () => {
   const detailsRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(0);
+    console.log(viewportHeight);
+
 
   // Scroll animation
   const { scrollYProgress } = useScroll({

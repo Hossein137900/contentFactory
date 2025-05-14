@@ -105,6 +105,7 @@ const WhyChooseUs = () => {
   // Handle window resize for responsive adjustments
   const [isMobile, setIsMobile] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
+  console.log(windowWidth);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -575,10 +576,10 @@ const WhyChooseUs = () => {
                 </div>
 
                 <p className="text-white/90 text-lg mb-6 leading-relaxed">
-                  "همکاری با کارخانه محتوا یکی از بهترین تصمیمات کسب و کار ما
+                  همکاری با کارخانه محتوا یکی از بهترین تصمیمات کسب و کار ما
                   بود. آنها نه تنها محتوای با کیفیت بالا تولید کردند، بلکه
                   استراتژی دیجیتال ما را کاملاً متحول کردند. نتایج فراتر از
-                  انتظارات ما بود."
+                  انتظارات ما بود.
                 </p>
 
                 <div>

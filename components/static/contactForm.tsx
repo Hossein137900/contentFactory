@@ -134,10 +134,10 @@ const ContactForm = () => {
   // Refs for animations
   const formRef = useRef<HTMLFormElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const isFormInView = useInView(formRef, {
-    once: false,
-    margin: "-100px 0px",
-  });
+  // const isFormInView = useInView(formRef, {
+  //   once: false,
+  //   margin: "-100px 0px",
+  // });
   const isTitleInView = useInView(titleRef, {
     once: false,
     margin: "-100px 0px",
@@ -234,6 +234,8 @@ const ContactForm = () => {
         setIsSubmitted(false);
       }, 3000);
     } catch (error) {
+      console.log(error);
+
       toast.error("خطا در ارسال پیام. لطفاً دوباره تلاش کنید");
     } finally {
       setIsSubmitting(false);
@@ -308,7 +310,6 @@ const ContactForm = () => {
           {/* Contact information */}
           <motion.div
             className="lg:col-span-2 space-y-8"
-          
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10">
@@ -411,7 +412,6 @@ const ContactForm = () => {
           {/* Contact form */}
           <motion.div
             className="lg:col-span-3"
-          
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10 relative overflow-hidden">
@@ -562,7 +562,11 @@ const ContactForm = () => {
                           انتخاب کنید
                         </option>
                         {serviceOptions.map((option) => (
-                          <option className="bg-black" key={option.id} value={option.id}>
+                          <option
+                            className="bg-black"
+                            key={option.id}
+                            value={option.id}
+                          >
                             {option.name}
                           </option>
                         ))}

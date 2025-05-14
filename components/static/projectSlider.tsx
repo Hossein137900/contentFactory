@@ -147,6 +147,8 @@ const ProjectSlider = () => {
   const [startX, setStartX] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const sliderRef = useRef<HTMLDivElement>(null);
+    console.log(selectedDetailImage);
+
 
   // Mouse position for parallax effect
   const mouseX = useMotionValue(0);
