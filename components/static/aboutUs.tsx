@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import Image from "next/image";
 import { companyValues, teamMembers, timelineEvents } from "../../data/aboutUs";
+import Link from "next/link";
 
 const AboutUs = () => {
   const [selectedMember, setSelectedMember] = useState<string | null>(null);
@@ -43,8 +44,8 @@ const AboutUs = () => {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacitySection = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.8, 1],
-    [0.5, 1, 1, 0.5]
+    [1, 1, 1, 1],
+    [1, 1, 1, 1]
   );
 
   // Handle window resize for responsive adjustments
@@ -178,7 +179,7 @@ const AboutUs = () => {
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                تماس با ما
+                <Link href="/contact">تماس با ما</Link>{" "}
               </motion.button>
 
               <motion.button
@@ -192,7 +193,7 @@ const AboutUs = () => {
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                مشاهده نمونه کارها
+                <Link href="/works">مشاهده نمونه کارها</Link>
               </motion.button>
             </motion.div>
           </motion.div>
@@ -918,7 +919,7 @@ const AboutUs = () => {
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                تماس با ما
+                <Link href="/contact">تماس با ما</Link>
               </motion.button>
 
               <motion.button
@@ -932,7 +933,7 @@ const AboutUs = () => {
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                مشاهده نمونه کارها
+                <Link href="/works">مشاهده نمونه کارها</Link>
               </motion.button>
             </div>
           </motion.div>

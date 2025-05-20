@@ -4,7 +4,6 @@ import { sahel } from "@/next-persian-fonts/sahel";
 import Navbar from "@/components/global/navabr";
 import { Toaster } from "react-hot-toast";
 import Avatar from "@/components/global/avatar";
-import SnakeLine from "@/components/static/snake";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +19,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${sahel.className} bg-[#f8fafc] antialiased relative`}>
         {/* SnakeLine with z-index 0 will appear behind other components */}
-        <SnakeLine />
         <Avatar />
         <div className="relative">
           <Navbar />

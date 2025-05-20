@@ -11,6 +11,7 @@ import Image from "next/image";
 import { IoArrowForward, IoArrowBack } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
 import { projects } from "../../data/projectSlider";
+import Link from "next/link";
 
 const ProjectSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -244,7 +245,7 @@ const ProjectSlider = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.19, 1.0, 0.22, 1.0] }}
           >
-            نمونه کارهای ما
+            پروژه‌ها
           </motion.h2>
 
           <motion.div
@@ -599,7 +600,7 @@ const ProjectSlider = () => {
             }}
             whileTap={{ scale: 0.98 }}
           >
-            درخواست مشاوره
+            <Link href="/contact">تماس با ما</Link>{" "}
           </motion.button>
         </motion.div>
 

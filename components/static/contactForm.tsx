@@ -139,7 +139,7 @@ const ContactForm = () => {
 
   return (
     <div
-      className="relative min-h-screen w-full overflow-hidden bg-[#030014]"
+      className="relative min-h-screen w-full overflow-hidden pb-20 bg-[#030014]"
       dir="rtl"
     >
       {/* Background image with blur effect */}
